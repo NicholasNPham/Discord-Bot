@@ -36,5 +36,13 @@ async def join(ctx):
     else:
         await ctx.send("You are not in a voice channel. Join a channel first to run this command.")
 
+@client.command(pass_context = True)
+async def leave(ctx):
+    if (ctx.voice_client):
+        await ctx.guild.voice_client.disconnect()
+        await ctx.send("Left the Voice Channel.")
+    else:
+        await ctx.send("Not in voice channel.")
+        
 client.run(BOTTOKEN)
 
