@@ -1,6 +1,8 @@
 import discord
 from discord.ext import commands
 from discord import FFmpegPCMAudio
+from discord import Member
+from discord.ext.commands import has_permissions, MissingPermissions
 
 # API Discord Token
 from apikeys import *
