@@ -74,9 +74,10 @@ async def stop(ctx):
     voice.stop()
 
 @client.command(pass_context = True)
-async def play(ctx):
+async def play(ctx, arg):
     voice = ctx.guild.voice_client
-    source = FFmpegPCMAudio(wav_file)
+    song = arg + '.wav'
+    source = FFmpegPCMAudio(song)
     player = voice.play(source)
 
 client.run(BOTTOKEN)
