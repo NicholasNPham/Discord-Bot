@@ -39,14 +39,14 @@ async def on_member_remove(member):
 
 # Joining and Playing Wav File
 
-wav_file = 'interlude.wav'
+wav_file = 'eyes.wav'
 
 @client.command(pass_context = True)
 async def join(ctx):
     if (ctx.author.voice):
         channel = ctx.message.author.voice.channel
         voice = await channel.connect()
-        source = FFmpegPCMAudio('interlude.wav')
+        source = FFmpegPCMAudio('eyes.wav')
         player = voice.play(source)
         await ctx.send("Now Playing " + wav_file)
     else:
@@ -88,7 +88,7 @@ async def play(ctx, arg):
     source = FFmpegPCMAudio(song)
     player = voice.play(source, after=lambda x=None: check_queue(ctx, ctx.message.guild.id))
     await ctx.send("Song " + str(song) + ' is Playing')
-
+ 
 @client.command(pass_context = True)
 async def queue(ctx, arg):
     voice = ctx.guild.voice_client
