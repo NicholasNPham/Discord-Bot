@@ -31,7 +31,7 @@ async def on_member_remove(member):
 
 # Joining and Playing Wav File
 
-wav_file = 'Travis Scott - sdp interlude.wav'
+wav_file = 'interlude.wav'
 
 @client.command(pass_context = True)
 async def join(ctx):
@@ -72,6 +72,12 @@ async def resume(ctx):
 async def stop(ctx):
     voice = discord.utils.get(client.voice_clients, guild=ctx.guild)
     voice.stop()
+
+@client.command(pass_context = True)
+async def play(ctx):
+    voice = ctx.guild.voice_client
+    source = FFmpegPCMAudio(wav_file)
+    player = voice.play(source)
 
 client.run(BOTTOKEN)
 
