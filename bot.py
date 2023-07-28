@@ -2,7 +2,8 @@ import discord
 from discord.ext import commands
 from discord import FFmpegPCMAudio
 from discord import Member
-from discord.ext.commands import has_permissions, MissingPermissions
+from discord.ext.commands import has_permissions
+from discord.ext.commands import MissingPermissions
 
 # API Discord Token
 from apikeys import *
@@ -113,6 +114,18 @@ async def on_message(message):
     if message.content == 'hi':
         await message.delete()
         await message.channel.send("Dont Say Hi")
+    await client.process_commands(message)
+
+@client.command()
+@has_permissions(kick_members=True)
+async def kick(ctx, member: discord.Member, *, reason=None):
+    await member.kick(reason=reason)
+    await ctx.send(f'User {member} has been kicked')
+
+@kick.error
+async def kick_error(ctx, error):
+    if isinstance(error, commands.MissingPermissions):
+        await ctx.send("You Dont have Permissions to kick people!")
 
 client.run(BOTTOKEN)
 
