@@ -11,6 +11,8 @@ from apikeys import *
 intents = discord.Intents.all()
 intents.members = True
 
+wav_file = 'eyes.wav'
+
 queues = {}
 
 def check_queue(ctx, id):
@@ -19,16 +21,14 @@ def check_queue(ctx, id):
         source = queues[id].pop(0)
         player = voice.play(source)
 
+# Client Events
+
 client = commands.Bot(command_prefix='.', intents=intents)       
 
 @client.event
 async def on_ready():
     print('Bot is Online.')
     print('-------------------')
-
-@client.command()
-async def hello(ctx):
-    await ctx.send('This is Bot Responding.')
 
 @client.event
 async def on_member_join(member):
@@ -40,9 +40,15 @@ async def on_member_remove(member):
     channel = client.get_channel(1092278186886303858)
     await channel.send("Goodbye " + str(member))
 
-# Joining and Playing Wav File
+@client.event
+async def on_message(message):
 
-wav_file = 'eyes.wav'
+    if message.content == 'hi':
+        await message.delete()
+        await message.channel.send("Dont Say Hi")
+    await client.process_commands(message)
+
+# Client Commands 
 
 @client.command(pass_context = True)
 async def join(ctx):
@@ -54,6 +60,10 @@ async def join(ctx):
         await ctx.send("Now Playing " + wav_file)
     else:
         await ctx.send("You are not in a voice channel. Join a channel first to run this command.")
+
+@client.command()
+async def hello(ctx):
+    await ctx.send('This is Bot Responding.')
 
 @client.command(pass_context = True)
 async def leave(ctx):
@@ -108,19 +118,13 @@ async def queue(ctx, arg):
 
     await ctx.send(str(song) + ' Added to Queue')
 
-@client.event
-async def on_message(message):
-
-    if message.content == 'hi':
-        await message.delete()
-        await message.channel.send("Dont Say Hi")
-    await client.process_commands(message)
-
 @client.command()
 @has_permissions(kick_members=True)
 async def kick(ctx, member: discord.Member, *, reason=None):
     await member.kick(reason=reason)
     await ctx.send(f'User {member} has been kicked')
+
+# Client Errors
 
 @kick.error
 async def kick_error(ctx, error):
