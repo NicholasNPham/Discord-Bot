@@ -105,5 +105,12 @@ async def queue(ctx, arg):
 
     await ctx.send(str(song) + ' Added to Queue')
 
+@client.event
+async def on_message(message):
+
+    if message.content == 'hi':
+        await message.delete()
+        await message.channel.send("Dont Say Hi")
+
 client.run(BOTTOKEN)
 
