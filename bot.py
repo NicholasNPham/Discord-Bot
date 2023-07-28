@@ -60,5 +60,14 @@ async def pause(ctx):
     else:
         await ctx.send("No Song is Playing.")
         
+@client.command(pass_context = True)
+async def resume(ctx):
+    voice = discord.utils.get(client.voice_clients, guild=ctx.guild)
+    if voice.is_paused():
+        voice.resume()
+    else:
+        await ctx.send("Song is Playing")
+
+
 client.run(BOTTOKEN)
 
