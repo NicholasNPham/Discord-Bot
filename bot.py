@@ -51,6 +51,14 @@ async def leave(ctx):
         await ctx.send("Left the Voice Channel.")
     else:
         await ctx.send("Not in voice channel.")
+
+@client.command(pass_context = True)
+async def pause(ctx):
+    voice = discord.utils.get(client.voice_clients, guild=ctx.guild)
+    if voice.is_playing():
+        voice.pause()
+    else:
+        await ctx.send("No Song is Playing.")
         
 client.run(BOTTOKEN)
 
