@@ -8,6 +8,14 @@ from apikeys import *
 intents = discord.Intents.all()
 intents.members = True
 
+queues = {}
+
+def check_queue(ctx, id):
+    if queues[id] != []:
+        voice = ctx.guild.voice_client
+        source = queues[id].pop(0)
+        player = voice.play(source)
+
 client = commands.Bot(command_prefix='.', intents=intents)       
 
 @client.event
@@ -38,7 +46,7 @@ async def join(ctx):
     if (ctx.author.voice):
         channel = ctx.message.author.voice.channel
         voice = await channel.connect()
-        source = FFmpegPCMAudio(wav_file)
+        source = FFmpegPCMAudio('interlude.wav')
         player = voice.play(source)
         await ctx.send("Now Playing " + wav_file)
     else:
@@ -78,7 +86,24 @@ async def play(ctx, arg):
     voice = ctx.guild.voice_client
     song = arg + '.wav'
     source = FFmpegPCMAudio(song)
-    player = voice.play(source)
+    player = voice.play(source, after=lambda x=None: check_queue(ctx, ctx.message.guild.id))
+    await ctx.send("Song " + str(song) + ' is Playing')
+
+@client.command(pass_context = True)
+async def queue(ctx, arg):
+    voice = ctx.guild.voice_client
+    song = arg + '.wav'
+    source = FFmpegPCMAudio(song)
+
+    guild_id = ctx.message.guild.id
+
+    if guild_id in queues:
+        queues[guild_id].append(source)
+
+    else:
+        queues[guild_id] = [source]
+
+    await ctx.send(str(song) + ' Added to Queue')
 
 client.run(BOTTOKEN)
 
