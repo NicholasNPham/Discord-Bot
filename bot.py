@@ -68,6 +68,10 @@ async def resume(ctx):
     else:
         await ctx.send("Song is Playing")
 
+@client.command(pass_context = True)
+async def stop(ctx):
+    voice = discord.utils.get(client.voice_clients, guild=ctx.guild)
+    voice.stop()
 
 client.run(BOTTOKEN)
 
