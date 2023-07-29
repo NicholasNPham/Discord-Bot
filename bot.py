@@ -133,7 +133,28 @@ async def kick(ctx, member: discord.Member, *, reason=None):
 
 @client.command()
 async def embed(ctx):
-    embed = discord.Embed(title='DOG', url='https://google.com', description="Doggin Dog!", color=0xa8a7a7)
+    embed = discord.Embed(
+        title='GitHub',
+        url='https://github.com/NicholasNPham', 
+        description="My Profile", color=0xa8a7a7)
+    
+    embed.set_author(
+        name="Nicholas Pham",
+        url="https://github.com/NicholasNPham/FlaskAppTrade/commits?author=NicholasNPham",
+        icon_url="https://avatars.githubusercontent.com/u/132528074?s=400&u=292ac87004412c2c0a34b319e84b7f82e4a6dcf7&v=4")
+
+    embed.set_thumbnail(url="https://1000logos.net/wp-content/uploads/2021/05/GitHub-logo.png")
+
+    embed.add_field(
+        name="Repositories",
+        value="Check out all the repositories made under this GitHub profile.",
+        inline=True)
+
+    embed.add_field(
+        name="Current Project",
+        value="Trading Website made with Flask & TradingView_TA Packages.",
+        inline=True)
+
     await ctx.send(embed=embed)
 
 # Client Errors
