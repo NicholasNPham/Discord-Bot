@@ -8,11 +8,14 @@ from discord.ext.commands import MissingPermissions
 # API Discord Token
 from apikeys import *
 
+# General Setup
 intents = discord.Intents.all()
 intents.members = True
 
+# Wave File To Start
 wav_file = 'eyes.wav'
 
+# Queue Dictionary
 queues = {}
 
 def check_queue(ctx, id):
@@ -21,7 +24,9 @@ def check_queue(ctx, id):
         source = queues[id].pop(0)
         player = voice.play(source)
 
-# Client Events
+"""
+Client Events
+"""
 
 client = commands.Bot(command_prefix='.', intents=intents)       
 
@@ -48,7 +53,9 @@ async def on_message(message):
         await message.channel.send("Dont Say Hi")
     await client.process_commands(message)
 
-# Client Commands 
+"""
+Client Commands
+"""
 
 @client.command(pass_context = True)
 async def join(ctx):
@@ -123,6 +130,11 @@ async def queue(ctx, arg):
 async def kick(ctx, member: discord.Member, *, reason=None):
     await member.kick(reason=reason)
     await ctx.send(f'User {member} has been kicked')
+
+@client.command()
+async def embed(ctx):
+    embed = discord.Embed(title='DOG', url='https://google.com', description="Doggin Dog!", color=0xa8a7a7)
+    await ctx.send(embed=embed)
 
 # Client Errors
 
