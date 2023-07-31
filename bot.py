@@ -53,6 +53,11 @@ async def on_message(message):
         await message.channel.send("Dont Say Hi")
     await client.process_commands(message)
 
+@client.event()
+async def on_command_error(ctx, error):
+    if isinstance(error, commands.MissingPermissions):
+        await ctx.send("You dont have permission to run this command.")
+
 """
 Client Commands
 """
